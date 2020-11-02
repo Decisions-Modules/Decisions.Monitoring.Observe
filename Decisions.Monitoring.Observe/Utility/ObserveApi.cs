@@ -13,13 +13,13 @@ namespace Decisions.Monitoring.Observe.Utility
         public static bool SendLog(params ObserveLogData[] logs)
         {
             ObserveCredential connection = CredentialHelper.LogCredentials;
-            if (connection == null || string.IsNullOrEmpty(connection.Token) ||
+            if (connection == null || string.IsNullOrEmpty(connection.Auth) ||
                 string.IsNullOrEmpty(connection.BaseUrl))
                 return false;
             try
             {
-                var resp = PostRequest<Object, ObserveLogData>(connection, "", logs);
-                return true;
+                var res = PostRequest<Object, ObserveLogData>(connection, "", logs);
+                return res;
             }
             catch
             {
@@ -30,14 +30,14 @@ namespace Decisions.Monitoring.Observe.Utility
         public static bool SendMetrics( params ObserveMetricsData[] metris)
         {
             ObserveCredential connection = CredentialHelper.MetricsCredentials;
-            if (connection == null || string.IsNullOrEmpty(connection.Token) ||
+            if (connection == null || string.IsNullOrEmpty(connection.Auth) ||
                 string.IsNullOrEmpty(connection.BaseUrl))
                 return false;
 
             try
             {
-                var resp = PostRequest<object, ObserveMetricsData>(connection, "", metris);
-                return true;
+                var res = PostRequest<object, ObserveMetricsData>(connection, "", metris);
+                return res;
             }
             catch
             {

@@ -34,34 +34,33 @@ namespace Decisions.Monitoring.Observe
 
         [ORMField]
         [DataMember]
-        [PropertyClassificationAttribute("Minimum Log Level to Send", 1)]
+        [PropertyClassificationAttribute("Log Base Url", 1)]
+        [EmptyStringRule("Base Url is required")]
+        public string BaseUrl { get; set; }
+
+        [ORMField]
+        [DataMember]
+        [PropertyClassificationAttribute("Account Number", 2)]
+        [EmptyStringRule("Account Number is required")]
+        public string AccountNumber { get; set; }
+
+        [ORMField]
+        [DataMember]
+        [PropertyClassificationAttribute("Minimum Log Level to Send", 3)]
         [EnumEditor]
         public LogLevel MinSendLogLevel { get; set; }
 
         [ORMField]
         [DataMember]
-        [PropertyClassificationAttribute("Log Base Url", 2)]
         [PropertyHiddenByValue(nameof(MinSendLogLevel), LogLevel.None, true)]
-        //[EmptyStringRule("Base Url is required")]
-        public string LogBaseUrl { get; set; }
-
-        [DataMember]
-        [PropertyHiddenByValue(nameof(MinSendLogLevel), LogLevel.None, true)]
-        [PropertyClassificationAttribute("Log Token", 3)]
+        [PropertyClassificationAttribute("Log Token", 4)]
         public string LogToken { get; set; }
 
 
         [ORMField]
         [DataMember]
-        [PropertyClassificationAttribute("Send Metrics", 4)]
+        [PropertyClassificationAttribute("Send Metrics", 5)]
         public bool SendMetrics { get; set; }
-
-        [ORMField]
-        [DataMember]
-        [PropertyClassificationAttribute("Metrics Base Url", 5)]
-        [PropertyHiddenByValue(nameof(SendMetrics), false, true)]
-        //[EmptyStringRule("Base Url is required")]
-        public string MetricsBaseUrl { get; set; }
 
         [ORMField]
         [DataMember]
@@ -74,8 +73,7 @@ namespace Decisions.Monitoring.Observe
             var me = ObserveSettings.Instance();
             if (string.IsNullOrEmpty(Id))
             {
-                me.LogBaseUrl = DefaultBaseUrl;
-                me.MetricsBaseUrl = DefaultBaseUrl;
+                me.BaseUrl = DefaultBaseUrl;
                 me.MinSendLogLevel = LogLevel.None;
                 ModuleSettingsAccessor<ObserveSettings>.SaveSettings();
             }
@@ -85,21 +83,14 @@ namespace Decisions.Monitoring.Observe
         {
             var issues = new List<ValidationIssue>();
 
-            if ((MinSendLogLevel != LogLevel.None) )
+            if ((MinSendLogLevel != LogLevel.None) && string.IsNullOrEmpty(LogToken))
             {
-                if (string.IsNullOrEmpty(LogBaseUrl))
-                    issues.Add(new ValidationIssue(this, "Log Base URL must be supplied", "", BreakLevel.Fatal, nameof(LogToken)));
-                if (string.IsNullOrEmpty(LogToken))
-                    issues.Add(new ValidationIssue(this, "Log Token must be supplied", "", BreakLevel.Fatal, nameof(LogToken)));
-
+                issues.Add(new ValidationIssue(this, "Log Token must be supplied", "", BreakLevel.Fatal, nameof(LogToken)));
             };
 
-            if (SendMetrics)
+            if (SendMetrics && string.IsNullOrEmpty(MetricsToken))
             {
-                if (string.IsNullOrEmpty(MetricsBaseUrl))
-                    issues.Add(new ValidationIssue(this, "Metrics Base URL must be supplied", "", BreakLevel.Fatal, nameof(LogToken)));
-                if (string.IsNullOrEmpty(MetricsToken))
-                    issues.Add(new ValidationIssue(this, "Metrics Token must be supplied", "", BreakLevel.Fatal, nameof(MetricsToken)));
+                issues.Add(new ValidationIssue(this, "Metrics Token must be supplied", "", BreakLevel.Fatal, nameof(MetricsToken)));
             }
 
             return issues.ToArray();

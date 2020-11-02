@@ -14,7 +14,7 @@ namespace Decisions.Monitoring.Observe.Utility
             var httpClient = new HttpClient {BaseAddress = new Uri(credential.BaseUrl) };
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", credential.Token);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", credential.Auth);
 
             return httpClient;
         }
@@ -25,44 +25,26 @@ namespace Decisions.Monitoring.Observe.Utility
             return data;
         }
 
-        private static ObserveErrorResponse CheckResponse(HttpResponseMessage response)
+        private static string CheckResponse(HttpResponseMessage response)
         {
             if (!response.IsSuccessStatusCode)
             {
-                var err = ParseResponse<ObserveErrorResponse>(response);
-                return err;
+                var responseString = response.Content.ReadAsStringAsync().Result;
+                return responseString;
             }
 
-            ;
             return null;
         }
 
-        private static R ParseResponse<R>(HttpResponseMessage response) where R : new()
+        public static bool PostRequest<R, T>(ObserveCredential connection, string requestUri, params T[] content) where R : class, new()
         {
-            var responseString = response.Content.ReadAsStringAsync().Result;
-
-            var result = JsonConvert.DeserializeObject<R>(responseString);
-
-            return result;
-        }
-
-        private static R PostRequest<R, T>(ObserveCredential connection, string requestUri, T[] content) where R : class, new()
-        {
-            var date = ParseRequestContent(content);
-           /* var data = new StringBuilder();
-
-            foreach (var item in content)
-            {
-                if (data.Length > 0) data.Append("\n");
-                data.Append(ParseRequestContent(item));
-            }*/
+            var data = ParseRequestContent(content);
 
             var contentStr = new StringContent(data.ToString(), Encoding.UTF8, "application/json");
 
             var response = GetClient(connection).PostAsync(requestUri, contentStr).Result;
 
-            CheckResponse(response);
-            return ParseResponse<R>(response);
+            return CheckResponse(response)==null;
         }
     }
 }

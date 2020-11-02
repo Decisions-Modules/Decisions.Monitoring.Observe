@@ -1,4 +1,6 @@
-﻿using Decisions.Monitoring.Observe.Data;
+﻿using Decisions.DesignerRepository.Client.Service;
+using Decisions.Monitoring.Observe.Data;
+using System;
 
 namespace Decisions.Monitoring.Observe.Utility
 {
@@ -11,8 +13,8 @@ namespace Decisions.Monitoring.Observe.Utility
                 var settings = ObserveSettings.Instance();
                 return new ObserveCredential
                 {
-                    BaseUrl = settings.MetricsBaseUrl,
-                    Token = settings.MetricsToken ?? ""
+                    BaseUrl = settings.BaseUrl,
+                    Auth = GetAuthValueForHeader(settings.AccountNumber, settings.MetricsToken)
                 };
             }
         }
@@ -24,10 +26,16 @@ namespace Decisions.Monitoring.Observe.Utility
                 var settings = ObserveSettings.Instance();
                 return new ObserveCredential
                 {
-                    BaseUrl = settings.LogBaseUrl,
-                    Token = settings.LogToken ?? ""
+                    BaseUrl = settings.BaseUrl,
+                    Auth = GetAuthValueForHeader(settings.AccountNumber, settings.LogToken)
                 };
             }
+        }
+
+        private static string GetAuthValueForHeader(string accountNumber, string token)
+        {
+            if (String.IsNullOrEmpty(accountNumber) || String.IsNullOrEmpty(token)) return "";
+            return accountNumber + ' ' + token;
         }
     }
 }

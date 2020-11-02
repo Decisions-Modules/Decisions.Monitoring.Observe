@@ -3,6 +3,6 @@
     public class ObserveCredential
     {
         public string BaseUrl { get; set; }
-        public string Token { get; set; }
+        public string Auth { get; set; }
     }
 }
