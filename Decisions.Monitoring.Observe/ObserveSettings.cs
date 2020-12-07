@@ -28,9 +28,9 @@ namespace Decisions.Monitoring.Observe
 
     [ORMEntity]
     [DataContract]
-    public class ObserveSettings : AbstractModuleSettings, IValidationSource, IInitializable
+    public class ObserveSettings : AbstractModuleSettings, IInitializable
     {
-        public const string DefaultBaseUrl = "https://collect.observeinc.com/v1/observations/test";
+        public const string DefaultBaseUrl = "https://collect.observeinc.com/v1/observations";
 
         [ORMField]
         [DataMember]
@@ -52,48 +52,24 @@ namespace Decisions.Monitoring.Observe
 
         [ORMField]
         [DataMember]
-        [PropertyHiddenByValue(nameof(MinSendLogLevel), LogLevel.None, true)]
-        [PropertyClassificationAttribute("Log Token", 4)]
-        public string LogToken { get; set; }
-
-
-        [ORMField]
-        [DataMember]
         [PropertyClassificationAttribute("Send Metrics", 5)]
         public bool SendMetrics { get; set; }
 
         [ORMField]
         [DataMember]
-        [PropertyHiddenByValue(nameof(SendMetrics), false, true)]
-        [PropertyClassificationAttribute("Metrics Token", 6)]
-        public string MetricsToken { get; set; }
+        [PropertyClassificationAttribute("Auth Token", 6)]
+        [EmptyStringRule("Auth Token is required")]
+        public string AuthToken { get; set; }
 
         public void Initialize()
         {
-            var me = ObserveSettings.Instance();
+            var me = Instance();
             if (string.IsNullOrEmpty(Id))
             {
                 me.BaseUrl = DefaultBaseUrl;
                 me.MinSendLogLevel = LogLevel.None;
                 ModuleSettingsAccessor<ObserveSettings>.SaveSettings();
             }
-        }
-
-        public ValidationIssue[] GetValidationIssues()
-        {
-            var issues = new List<ValidationIssue>();
-
-            if ((MinSendLogLevel != LogLevel.None) && string.IsNullOrEmpty(LogToken))
-            {
-                issues.Add(new ValidationIssue(this, "Log Token must be supplied", "", BreakLevel.Fatal, nameof(LogToken)));
-            };
-
-            if (SendMetrics && string.IsNullOrEmpty(MetricsToken))
-            {
-                issues.Add(new ValidationIssue(this, "Metrics Token must be supplied", "", BreakLevel.Fatal, nameof(MetricsToken)));
-            }
-
-            return issues.ToArray();
         }
 
         public override BaseActionType[] GetActions(AbstractUserContext userContext, EntityActionType[] types)
