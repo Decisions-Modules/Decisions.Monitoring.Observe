@@ -11,7 +11,7 @@ namespace Decisions.Monitoring.Observe.Utility
     {
         private static HttpClient GetClient(ObserveCredential credential)
         {
-            var httpClient = new HttpClient {BaseAddress = new Uri(credential.BaseUrl) };
+            var httpClient = new HttpClient {BaseAddress = new Uri($"{credential.BaseUrl}/{credential.PartialUrl}") };
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", credential.Auth);
@@ -40,7 +40,7 @@ namespace Decisions.Monitoring.Observe.Utility
         {
             var data = ParseRequestContent(content);
 
-            var contentStr = new StringContent(data.ToString(), Encoding.UTF8, "application/json");
+            var contentStr = new StringContent(data, Encoding.UTF8, "application/json");
 
             var response = GetClient(connection).PostAsync(requestUri, contentStr).Result;
 

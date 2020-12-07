@@ -1,19 +1,15 @@
 ﻿using Decisions.Monitoring.Observe.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Decisions.Monitoring.Observe.TestSuit
 {
-    class Credential
+    static class Credential
     {
-        public static ObserveCredential GetCredentinal()
+        public static ObserveCredential GetCredential()
         {
             return new ObserveCredential()
             {
                 BaseUrl = "https://collect.observeinc.com/v1/observations/test",
+                PartialUrl = "metrics",
                 Auth = "put you account Id and token here"
             };
         }

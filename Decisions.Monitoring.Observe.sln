@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decisions.Monitoring.Observe", "Decisions.Monitoring.Observe\Decisions.Monitoring.Observe.csproj", "{79B27EE4-1AE9-4435-9FA4-2A84E5298603}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decisions.Monitoring.Observe.TestSuit", "Decisions.Monitoring.Observe.TestSuit\Decisions.Monitoring.Observe.TestSuit.csproj", "{F4FBC89A-F23F-4E1C-B066-990312651652}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Decisions.Monitoring.Observe.TestSuite", "Decisions.Monitoring.Observe.TestSuite\Decisions.Monitoring.Observe.TestSuite.csproj", "{F4FBC89A-F23F-4E1C-B066-990312651652}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

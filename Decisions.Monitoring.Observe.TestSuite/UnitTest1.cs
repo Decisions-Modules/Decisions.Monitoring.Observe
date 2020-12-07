@@ -16,7 +16,7 @@ namespace Decisions.Monitoring.Observe.TestSuit
         [TestMethod]
         public void TestMethod1()
         {
-            var c = Credential.GetCredentinal();
+            var c = Credential.GetCredential();
             var data = new TestData();
             var res = ObserveApi.PostRequest<Object, TestData>(c, "", data);
     }

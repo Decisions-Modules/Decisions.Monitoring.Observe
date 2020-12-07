@@ -30,7 +30,6 @@ namespace Decisions.Monitoring.Observe.Utility
                 dataList.Clear();
             }
 
-            ;
             SendData(data);
         }
 

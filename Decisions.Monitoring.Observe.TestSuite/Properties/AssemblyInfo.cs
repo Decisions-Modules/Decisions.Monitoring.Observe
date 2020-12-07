@@ -2,11 +2,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Decisions.Monitoring.Observe.TestSuit")]
+[assembly: AssemblyTitle("Decisions.Monitoring.Observe.TestSuite")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Decisions.Monitoring.Observe.TestSuit")]
+[assembly: AssemblyProduct("Decisions.Monitoring.Observe.TestSuite")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

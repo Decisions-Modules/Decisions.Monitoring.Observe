@@ -54,7 +54,6 @@ namespace Decisions.Monitoring.Observe
                             Count = heartbeat.NumberOfFlowStarts
                         }
                     }, TimeSpan.Zero);
-                // 
                 ProfilerService.DetailWriter?.WriteDetail(
                     new ProfileWriterData("Rule Runs", null, ProfilerType.Usage),
                     new[]
@@ -96,7 +95,7 @@ namespace Decisions.Monitoring.Observe
                 {
                     Name = header.Name,
                     Details = detail.Message,
-                    HostName = System.Environment.MachineName,
+                    HostName = Environment.MachineName,
                     BasePortalUrlName = settings.PortalBaseUrl,
                     DecisionsVersion = DecisionsVersion.VERSION
                 }
