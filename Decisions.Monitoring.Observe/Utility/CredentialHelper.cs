@@ -21,7 +21,7 @@ namespace Decisions.Monitoring.Observe.Utility
         private static string GetAuthValueForHeader(string accountNumber, string token)
         {
             if (String.IsNullOrEmpty(accountNumber) || String.IsNullOrEmpty(token)) return "";
-            return $"Bearer {accountNumber} {token}";
+            return $"{accountNumber} {token}";
         }
     }
 }
